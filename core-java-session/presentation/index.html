@@ -27,20 +27,46 @@
     pre { background:#070d18; border:1px solid var(--line); border-radius:12px; padding:16px 18px; overflow:auto; font-size:0.95rem; line-height:1.4; color:#d1fae5; font-family:ui-monospace,Consolas,monospace; }
     .pill { display:inline-block; background:#134e4a; color:var(--accent); border-radius:999px; padding:4px 10px; font-size:0.85rem; margin-right:6px; }
     .warn { color:var(--warn); } .bad { color:var(--bad); } .ok { color:var(--ok); }
-    footer.bar { position:fixed; left:0; right:0; bottom:0; height:48px; display:flex; align-items:center; justify-content:space-between; padding:0 20px; background:#070d18; border-top:1px solid var(--line); font-size:0.85rem; color:var(--muted); }
+    footer.bar { position:fixed; left:0; right:0; bottom:0; height:48px; display:flex; align-items:center; justify-content:space-between; padding:0 20px; background:#070d18; border-top:1px solid var(--line); font-size:0.85rem; color:var(--muted); z-index:5; }
     #progress { position:absolute; left:0; top:0; height:3px; background:var(--accent); width:0; }
+    .nav-btn {
+      position:fixed; top:50%; transform:translateY(-50%); z-index:6;
+      display:flex; align-items:center; gap:8px; padding:14px 18px;
+      background:rgba(24,35,58,0.92); border:1px solid var(--line); border-radius:12px;
+      color:var(--text); font-size:1rem; font-weight:600; cursor:pointer;
+      backdrop-filter:blur(8px); transition:background 0.15s, border-color 0.15s, opacity 0.15s;
+      font-family:inherit;
+    }
+    .nav-btn:hover:not(:disabled) { background:var(--card); border-color:var(--accent); color:var(--accent); }
+    .nav-btn:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+    .nav-btn:disabled { opacity:0.35; cursor:not-allowed; }
+    .nav-btn .arrow { font-size:1.4rem; line-height:1; }
+    #btn-prev { left:20px; }
+    #btn-next { right:20px; flex-direction:row-reverse; }
+    @media (max-width: 720px) {
+      .nav-btn { padding:12px 14px; }
+      .nav-btn .label { display:none; }
+      #btn-prev { left:10px; }
+      #btn-next { right:10px; }
+    }
     #notes { display:none; position:fixed; right:16px; bottom:60px; width:min(420px,40vw); max-height:40vh; overflow:auto; background:#0f172a; border:1px solid var(--line); border-radius:12px; padding:12px 14px; font-size:0.9rem; color:#cbd5e1; }
     #notes.on { display:block; }
     ul.tight li { margin:8px 0; }
     .big { font-size:1.6rem; }
     .tree { font-size:1.15rem; line-height:1.7; background:var(--card); padding:18px 22px; border-radius:12px; border:1px solid var(--line); }
-    @media print { .slide { display:block!important; page-break-after:always; } footer.bar,#notes { display:none!important; } }
+    @media print { .slide { display:block!important; page-break-after:always; } footer.bar,#notes,.nav-btn { display:none!important; } }
   </style>
 </head>
 <body>
   <div id="deck"></div>
   <div id="notes"></div>
-  <footer class="bar"><div id="progress"></div><span>Core Java · Banking · OOP · Collections · Generics</span><span id="pos">1 / 1</span><span>← → Space · N notes · P print</span></footer>
+  <button type="button" class="nav-btn" id="btn-prev" aria-label="Previous slide">
+    <span class="arrow" aria-hidden="true">←</span><span class="label">Previous</span>
+  </button>
+  <button type="button" class="nav-btn" id="btn-next" aria-label="Next slide">
+    <span class="arrow" aria-hidden="true">→</span><span class="label">Next</span>
+  </button>
+  <footer class="bar"><div id="progress"></div><span>Core Java · Banking · OOP · Collections · Generics</span><span id="pos">1 / 1</span><span>Buttons · ← → Space · N notes · P print</span></footer>
   <script>
     const S = [];
     function slide(html, notes) { S.push({ html, notes: notes || "" }); }
@@ -155,6 +181,8 @@ void addInterest(List&lt;? super InterestBearing&gt; dest, ...);</pre>`, "PECS o
     const notesEl = document.getElementById("notes");
     const pos = document.getElementById("pos");
     const bar = document.getElementById("progress");
+    const btnPrev = document.getElementById("btn-prev");
+    const btnNext = document.getElementById("btn-next");
     let i = 0;
     function show(n) {
       i = Math.max(0, Math.min(S.length - 1, n));
@@ -162,8 +190,12 @@ void addInterest(List&lt;? super InterestBearing&gt; dest, ...);</pre>`, "PECS o
       notesEl.innerHTML = "<strong>Notes</strong><br>" + S[i].notes;
       pos.textContent = (i + 1) + " / " + S.length;
       bar.style.width = ((i) / (S.length - 1) * 100) + "%";
+      btnPrev.disabled = i === 0;
+      btnNext.disabled = i === S.length - 1;
       location.hash = String(i + 1);
     }
+    btnPrev.addEventListener("click", () => show(i - 1));
+    btnNext.addEventListener("click", () => show(i + 1));
     document.addEventListener("keydown", (e) => {
       if (["ArrowRight","PageDown"," ","Enter"].includes(e.key)) { e.preventDefault(); show(i + 1); }
       if (["ArrowLeft","PageUp","Backspace"].includes(e.key)) { e.preventDefault(); show(i - 1); }
