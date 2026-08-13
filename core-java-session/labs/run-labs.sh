@@ -7,7 +7,7 @@ OUT="$ROOT/out"
 rm -rf "$OUT"
 mkdir -p "$OUT"
 
-echo "Compiling labs..."
+echo "Compiling banking labs..."
 find "$SRC" -name "*.java" > "$OUT/sources.txt"
 javac -encoding UTF-8 -d "$OUT" @"$OUT/sources.txt"
 
@@ -19,10 +19,10 @@ run_demo() {
   java -cp "$OUT" "$2"
 }
 
-run_demo "OOP" "com.learnhub.session.oop.DemoOOP"
-run_demo "Collections & Iterators" "com.learnhub.session.collections.DemoCollections"
-run_demo "Generics" "com.learnhub.session.generics.DemoGenerics"
-run_demo "Capstone" "com.learnhub.session.capstone.CatalogApp"
+run_demo "OOP" "com.banking.session.oop.DemoOOP"
+run_demo "Collections & Iterators" "com.banking.session.collections.DemoCollections"
+run_demo "Generics" "com.banking.session.generics.DemoGenerics"
+run_demo "Capstone" "com.banking.session.capstone.BankingApp"
 
 echo
 echo "All demos finished."

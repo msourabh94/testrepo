@@ -2,36 +2,36 @@
 
 ## OOP in one table
 
-| Pillar | Meaning | In our catalog |
-|--------|---------|----------------|
-| Encapsulation | Hide state; protect invariants | private fields, validating constructors, `enroll()` |
-| Inheritance | is-a shared family | `VideoCourse extends Content` |
-| Polymorphism | one reference, many behaviors | `Content.catalogLine()` / `enroll()` |
-| Abstraction | show what, hide how | `abstract formatLabel()`, `interface Priced` |
+| Pillar | Meaning | In our bank |
+|--------|---------|-------------|
+| Encapsulation | Hide state; protect invariants | private balance, validated deposit/withdraw |
+| Inheritance | is-a shared family | `SavingsAccount extends Account` |
+| Polymorphism | one reference, many behaviors | `Account.statementLine()` / `withdraw()` |
+| Abstraction | show what, hide how | `abstract formatLabel()`, `interface InterestBearing` |
 
-**is-a** → extend a class. **has-a** → field (`Instructor`). **can-do** → interface (`Enrollable`).
+**is-a** → extend a class. **has-a** → field (`Customer` on `Account`). **can-do** → interface (`Transactable`).
 
 ```
-Content (abstract)
-  ├── VideoCourse     implements Priced
-  ├── LiveWorkshop    implements Priced  (overrides enroll: seat limit)
-  └── Assessment      not priced
+Account (abstract)
+  ├── SavingsAccount     implements InterestBearing
+  ├── CheckingAccount    overdraft-aware withdraw
+  └── PrepaidWallet      no interest
 ```
 
 - Override = runtime dispatch. Overload = compile-time.
 - Always `@Override`.
-- If you override `equals`, override `hashCode`.
+- If you override `equals`, override `hashCode` (use stable key: `accountNumber`).
 - Abstract class: shared state. Interface: capability (multiple).
 
 ## Collections — pick in 10 seconds
 
 | Need | Type | Usual impl |
 |------|------|------------|
-| Ordered catalog, index, duplicates OK | `List` | `ArrayList` |
-| Unique tags / emails | `Set` | `HashSet` |
+| Ordered statement list, index, duplicates OK | `List` | `ArrayList` |
+| Unique payment rails / tags | `Set` | `HashSet` |
 | Unique + insertion order | `Set` | `LinkedHashSet` |
 | Unique + sorted | `Set` | `TreeSet` |
-| id → course | `Map` | `HashMap` |
+| accountNumber → Account | `Map` | `HashMap` |
 | Stable iteration of map | `Map` | `LinkedHashMap` |
 | Sorted keys | `Map` | `TreeMap` |
 | Concurrent map | `Map` | `ConcurrentHashMap` |
@@ -41,41 +41,41 @@ Do **not** start new code with `Vector`, `Hashtable`, `Stack`.
 ### Iterator rule
 
 ```java
-Iterator<Content> it = list.iterator();
+Iterator<Account> it = accounts.iterator();
 while (it.hasNext()) {
-    if (shouldDrop(it.next())) {
+    if (shouldClose(it.next())) {
         it.remove();   // OK
     }
 }
 ```
 
-`for (Content c : list) { list.remove(c); }` → `ConcurrentModificationException`.
+`for (Account a : accounts) { accounts.remove(a); }` → `ConcurrentModificationException`.
 
 ## Generics
 
 ```java
-class Repository<T> { void save(int id, T e); T find(int id); }
+class Repository<T> { void save(String id, T e); T find(String id); }
 
-void print(List<? extends Content> src); // read Content  (producer)
-void put  (List<? super Priced> dest, Priced p); // write Priced (consumer)
+void print(List<? extends Account> src);              // read Account  (producer)
+void addInterest(List<? super InterestBearing> d, InterestBearing p); // write (consumer)
 ```
 
 - Raw `List` → runtime `ClassCastException`. Parameterize everything.
-- `List<VideoCourse>` is **not** a `List<Content>` (invariance).
+- `List<SavingsAccount>` is **not** a `List<Account>` (invariance).
 - Erasure: no `new T()` without a `Class<T>`.
 
 ## Copy-paste decisions
 
 ```java
-List<Content> catalog = new ArrayList<Content>();
-Set<String> tags = new LinkedHashSet<String>();
-Map<Integer, Content> byId = new HashMap<Integer, Content>();
+List<Account> ledger = new ArrayList<Account>();
+Set<String> rails = new LinkedHashSet<String>();
+Map<String, Account> byNumber = new HashMap<String, Account>();
 ```
 
 Return `Collections.unmodifiableList(...)` from services so callers cannot corrupt your indexes.
 
 ## Three bugs this session exists to prevent
 
-1. `switch (course.getType())` exploding as new types appear → **polymorphism**
-2. Duplicate ids / lost entries in a list → **Map by id + equals/hashCode**
+1. `switch (account.getType())` exploding as new products appear → **polymorphism**
+2. Duplicate account numbers / lost entries in a list → **Map by accountNumber + equals/hashCode**
 3. “It compiled” then exploded in prod → **generics, not raw types**
