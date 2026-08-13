@@ -1,6 +1,6 @@
-# Participant Workbook — Core Java Session
+# Participant Workbook — Core Java Session (Banking)
 
-Keep this file open. Type in the labs under `core-java-session/labs/src`. Do not paste from slides until you have tried.
+Keep this open. Type in `core-java-session/labs/src`. Try before you paste.
 
 Baseline: JDK 8+. From `core-java-session/labs`:
 
@@ -8,14 +8,14 @@ Baseline: JDK 8+. From `core-java-session/labs`:
 ./run-labs.sh
 ```
 
-Or compile in your IDE with source root = `labs/src`.
+Source root = `labs/src`.
 
 ---
 
 ## Mental model (fill during the first 30 minutes)
 
-| Idea | One sentence in your words | LearnHub example |
-|------|----------------------------|------------------|
+| Idea | One sentence in your words | Banking example |
+|------|----------------------------|-----------------|
 | Class | | |
 | Object | | |
 | Encapsulation | | |
@@ -32,58 +32,51 @@ Or compile in your IDE with source root = `labs/src`.
 
 ## Exercise 1 — Classes & inheritance (pairs, 5 min)
 
-Add `CertificateTrack extends Content`.
+Add `TermDeposit extends Account implements InterestBearing`.
 
 Requirements:
-- Constructor takes `id`, `title`, `category`, `instructor`, `modules` (int)
-- `formatLabel()` returns `CERT modules=N`
-- It is enrollable via the parent
-- It is **not** `Priced` (included in subscription)
+- Constructor: `accountNumber`, `customer`, `branchCode`, `openingBalance`, `interestRate`, `termMonths`
+- `formatLabel()` returns `TERM months=N`
+- Deposits/withdrawals use parent behavior
+- Accrues interest like `SavingsAccount`
 
-Hint: copy `Assessment` and change the label.
-
-**Check:** `DemoOOP` still compiles after you add a `CertificateTrack` to the catalog list.
+**Check:** add a `TermDeposit` to `DemoOOP` portfolio and re-run.
 
 ---
 
 ## Exercise 2 — Polymorphism (solo, 5 min)
 
-Without using `instanceof`, print a line for every catalog item:
+Without `instanceof`, print for every account:
 
 ```
-TITLE | enrollments=N
+ACCOUNT_NUMBER | balance=BALANCE
 ```
 
-Then answer: which method dispatch made this possible?
+Which method dispatch made this possible?
 
-**Stretch:** add `default String summary()` on `Enrollable` (Java 8+) *or* a method on `Content`. Which is the better home, and why?
+**Stretch:** where would a `summary()` method live — `Account` or `Transactable`? Why?
 
 ---
 
 ## Exercise 3 — Collections (pairs, 8 min)
 
-In `CatalogService`, add:
+In `AccountRegistry`, add:
 
 ```java
-public Set<String> uniqueInstructors()
+public Set<String> uniqueCustomers()
 ```
 
-Rules:
-- Return instructor **names**
-- No duplicates
-- Order does not matter (`HashSet` is fine)
+Return customer **names**, no duplicates, any order.
 
 Then add:
 
 ```java
-public Map<String, Integer> enrollmentByCategory()
+public Map<String, BigDecimal> totalBalanceByBranch()
 ```
 
-Rules:
-- Key = category
-- Value = **sum** of enrollment counts in that category
+Key = branch code, value = **sum of balances** in that branch.
 
-**Check:** after enrolling two Backend items, Backend’s total is 2 (or whatever you enrolled).
+**Check:** after deposits/withdrawals in the demo, branch totals match manual addition.
 
 ---
 
@@ -97,41 +90,37 @@ public final class Pager<T> {
 }
 ```
 
-Constraints:
-- Empty list if offset is past the end
-- Never throw if `items` is empty
-- Throw `IllegalArgumentException` if offset < 0 or limit <= 0
+Same rules as before (validate offset/limit; empty list when past end).
 
-Write a tiny `main` that pages the catalog `listAll()`.
+Page `registry.listAll()`.
 
 ---
 
-## Exercise 5 — Stretch (bored / senior)
+## Exercise 5 — Stretch
 
-1. Why is `Content.equals` based on `id` only? What breaks if two different titles share an id? What breaks if you compare by title?
-2. Implement `void copyPriced(List<? extends Priced> src, List<? super Priced> dest)`.
-3. Explain why `List<VideoCourse>` is **not** a `List<Content>` (invariance). Draw the heap if it were allowed.
+1. Why is `equals` based on `accountNumber` only?
+2. Implement `copyInterestProducts(List<? extends InterestBearing> src, List<? super InterestBearing> dest)`.
+3. Why is `List<SavingsAccount>` not a `List<Account>`?
 
 ---
 
-## Exercise 6 — Map this repo
+## Exercise 6 — Real-world mapping
 
-Open `src/main/java/com/quantiphi/learnhub/model/Course.java`.
+Discuss with your pair — no repo required:
 
-Discuss with your pair:
-- Which fields would become **types** instead of Strings? (`type`, `price`, `rating`)
-- Where would a `Map<Integer, Course>` live in `LearnHubServiceImpl`?
-- If `Course` is a JPA entity, should it also be your polymorphism root? (Usually: no — keep a domain type separate from the persistence DTO/entity.)
+- Where would `accountType` as String hurt you in a legacy core?
+- What belongs in `Map<String, Account>` vs a `List<Account>`?
+- Why use `BigDecimal` for money?
 
-Write 5 bullets. This is the “we work here” close.
+Write 5 bullets for your team’s next code review.
 
 ---
 
 ## During demos — watch for
 
-1. `LiveWorkshop` rejecting the third enroll
-2. `HashSet` scrambling tag order vs `LinkedHashSet`
-3. `ConcurrentModificationException` if you remove inside for-each
-4. `ClassCastException` from a raw `List`
+1. Checking account **overdraft limit** rejection
+2. `HashSet` vs `LinkedHashSet` on payment rails
+3. `ConcurrentModificationException` on for-each remove
+4. Raw `List` ClassCastException
 
-If you cannot explain those four after the session, you missed the plot. Ask in Q&A.
+If you cannot explain those four after the session, ask in Q&A.

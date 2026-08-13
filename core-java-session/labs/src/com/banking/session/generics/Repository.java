@@ -1,4 +1,4 @@
-package com.learnhub.session.generics;
+package com.banking.session.generics;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,16 +8,15 @@ import java.util.Map;
 
 /**
  * Type-safe in-memory store. One class, many entity types.
- * T is a type parameter — decided by the caller, checked by the compiler.
  */
 public class Repository<T> {
-    private final Map<Integer, T> store = new HashMap<Integer, T>();
+    private final Map<String, T> store = new HashMap<String, T>();
 
-    public void save(int id, T entity) {
+    public void save(String id, T entity) {
         store.put(id, entity);
     }
 
-    public T find(int id) {
+    public T find(String id) {
         return store.get(id);
     }
 

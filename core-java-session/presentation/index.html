@@ -3,573 +3,153 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Core Java — OOP, Collections &amp; Generics</title>
+  <title>Core Java — Banking Examples</title>
   <style>
-    :root {
-      --bg: #0b1220;
-      --panel: #121b2f;
-      --card: #18233a;
-      --text: #e8eefc;
-      --muted: #9aaccc;
-      --accent: #5eead4;
-      --accent2: #93c5fd;
-      --warn: #fbbf24;
-      --bad: #fb7185;
-      --ok: #86efac;
-      --line: #243049;
-    }
-    * { box-sizing: border-box; }
-    html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text);
-      font-family: "Segoe UI", Inter, system-ui, sans-serif; }
-    #deck { height: 100%; }
-    .slide {
-      display: none; height: 100%; padding: 48px 64px 72px;
-      flex-direction: column; justify-content: center;
-    }
-    .slide.on { display: flex; }
-    .slide.title-slide { background:
-      radial-gradient(1200px 500px at 10% -10%, #164e63 0%, transparent 50%),
-      radial-gradient(900px 400px at 100% 0%, #1e3a8a 0%, transparent 45%),
-      var(--bg); }
-    h1 { font-size: 2.6rem; margin: 0 0 12px; letter-spacing: -0.03em; }
-    h2 { font-size: 2rem; margin: 0 0 20px; color: var(--accent); letter-spacing: -0.02em; }
-    h3 { font-size: 1.25rem; margin: 0 0 8px; color: var(--accent2); }
-    p, li { font-size: 1.22rem; line-height: 1.45; color: var(--text); }
-    .muted { color: var(--muted); }
-    .kicker { text-transform: uppercase; letter-spacing: 0.16em; color: var(--accent);
-      font-size: 0.85rem; font-weight: 700; margin-bottom: 10px; }
-    .row { display: flex; gap: 20px; flex-wrap: wrap; }
-    .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px;
-      padding: 18px 20px; flex: 1; min-width: 220px; }
-    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-    .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
-    table { width: 100%; border-collapse: collapse; font-size: 1.05rem; }
-    th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
-    th { color: var(--accent); font-weight: 600; }
-    code, pre { font-family: ui-monospace, "Cascadia Code", Consolas, monospace; }
-    pre { background: #070d18; border: 1px solid var(--line); border-radius: 12px;
-      padding: 16px 18px; overflow: auto; font-size: 0.95rem; line-height: 1.4; color: #d1fae5; }
-    .pill { display: inline-block; background: #134e4a; color: var(--accent);
-      border-radius: 999px; padding: 4px 10px; font-size: 0.85rem; margin-right: 6px; }
-    .warn { color: var(--warn); }
-    .bad { color: var(--bad); }
-    .ok { color: var(--ok); }
-    footer.bar {
-      position: fixed; left: 0; right: 0; bottom: 0; height: 48px;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 20px; background: #070d18; border-top: 1px solid var(--line);
-      font-size: 0.85rem; color: var(--muted); z-index: 5;
-    }
-    #progress { position: absolute; left: 0; top: 0; height: 3px; background: var(--accent); width: 0; }
-    #notes {
-      display: none; position: fixed; right: 16px; bottom: 60px; width: min(420px, 40vw);
-      max-height: 40vh; overflow: auto; background: #0f172a; border: 1px solid var(--line);
-      border-radius: 12px; padding: 12px 14px; font-size: 0.9rem; color: #cbd5e1; z-index: 6;
-    }
-    #notes.on { display: block; }
-    .help { font-size: 0.9rem; color: var(--muted); }
-    ul.tight li { margin: 8px 0; }
-    .big { font-size: 1.6rem; }
-    .tree { font-size: 1.15rem; line-height: 1.7; background: var(--card); padding: 18px 22px;
-      border-radius: 12px; border: 1px solid var(--line); }
-    @media print {
-      body { background: #fff; color: #111; }
-      .slide { display: block !important; height: auto; page-break-after: always;
-        padding: 24px; color: #111; }
-      footer.bar, #notes { display: none !important; }
-      pre { background: #f4f4f5; color: #111; }
-      h2 { color: #0f766e; }
-    }
+    :root { --bg:#0b1220; --card:#18233a; --text:#e8eefc; --muted:#9aaccc; --accent:#5eead4; --accent2:#93c5fd; --warn:#fbbf24; --bad:#fb7185; --ok:#86efac; --line:#243049; }
+    * { box-sizing:border-box; }
+    html,body { margin:0; height:100%; background:var(--bg); color:var(--text); font-family:"Segoe UI",Inter,system-ui,sans-serif; }
+    #deck { height:100%; }
+    .slide { display:none; height:100%; padding:48px 64px 72px; flex-direction:column; justify-content:center; }
+    .slide.on { display:flex; }
+    .slide.title-slide { background:radial-gradient(1200px 500px at 10% -10%,#164e63 0%,transparent 50%),radial-gradient(900px 400px at 100% 0%,#1e3a8a 0%,transparent 45%),var(--bg); }
+    h1 { font-size:2.6rem; margin:0 0 12px; letter-spacing:-0.03em; }
+    h2 { font-size:2rem; margin:0 0 20px; color:var(--accent); }
+    h3 { font-size:1.25rem; margin:0 0 8px; color:var(--accent2); }
+    p,li { font-size:1.22rem; line-height:1.45; }
+    .muted { color:var(--muted); }
+    .kicker { text-transform:uppercase; letter-spacing:0.16em; color:var(--accent); font-size:0.85rem; font-weight:700; margin-bottom:10px; }
+    .card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:18px 20px; flex:1; min-width:220px; }
+    .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+    .grid3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; }
+    table { width:100%; border-collapse:collapse; font-size:1.05rem; }
+    th,td { text-align:left; padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top; }
+    th { color:var(--accent); }
+    pre { background:#070d18; border:1px solid var(--line); border-radius:12px; padding:16px 18px; overflow:auto; font-size:0.95rem; line-height:1.4; color:#d1fae5; font-family:ui-monospace,Consolas,monospace; }
+    .pill { display:inline-block; background:#134e4a; color:var(--accent); border-radius:999px; padding:4px 10px; font-size:0.85rem; margin-right:6px; }
+    .warn { color:var(--warn); } .bad { color:var(--bad); } .ok { color:var(--ok); }
+    footer.bar { position:fixed; left:0; right:0; bottom:0; height:48px; display:flex; align-items:center; justify-content:space-between; padding:0 20px; background:#070d18; border-top:1px solid var(--line); font-size:0.85rem; color:var(--muted); }
+    #progress { position:absolute; left:0; top:0; height:3px; background:var(--accent); width:0; }
+    #notes { display:none; position:fixed; right:16px; bottom:60px; width:min(420px,40vw); max-height:40vh; overflow:auto; background:#0f172a; border:1px solid var(--line); border-radius:12px; padding:12px 14px; font-size:0.9rem; color:#cbd5e1; }
+    #notes.on { display:block; }
+    ul.tight li { margin:8px 0; }
+    .big { font-size:1.6rem; }
+    .tree { font-size:1.15rem; line-height:1.7; background:var(--card); padding:18px 22px; border-radius:12px; border:1px solid var(--line); }
+    @media print { .slide { display:block!important; page-break-after:always; } footer.bar,#notes { display:none!important; } }
   </style>
 </head>
 <body>
   <div id="deck"></div>
   <div id="notes"></div>
-  <footer class="bar">
-    <div id="progress"></div>
-    <span>Core Java · OOP · Collections · Generics</span>
-    <span id="pos">1 / 1</span>
-    <span class="help">← → Space · N notes · P print · Home/End</span>
-  </footer>
+  <footer class="bar"><div id="progress"></div><span>Core Java · Banking · OOP · Collections · Generics</span><span id="pos">1 / 1</span><span>← → Space · N notes · P print</span></footer>
   <script>
     const S = [];
     function slide(html, notes) { S.push({ html, notes: notes || "" }); }
 
-    slide(`
-      <div class="kicker">Internal technical session · 3 hours</div>
-      <h1>Core Java</h1>
-      <p class="big">Object-Oriented Programming · Collections · Generics</p>
-      <p class="muted">Hands-on, catalog-shaped examples — not a keyword tour.</p>
-      <p style="margin-top:28px"><span class="pill">LearnHub domain</span><span class="pill">Live coding</span><span class="pill">Q&amp;A last 30 min</span></p>
-    `, "Welcome. State your name and the contract: people leave able to model catalog items and store them correctly. Do not apologize for time. Start on time.");
+    slide(`<div class="kicker">Internal technical session · 3 hours</div><h1>Core Java</h1><p class="big">OOP · Collections · Generics</p><p class="muted">Hands-on with a mini banking core — accounts, branches, interest, overdraft.</p><p style="margin-top:28px"><span class="pill">Banking domain</span><span class="pill">Live coding</span><span class="pill">Q&amp;A last 30 min</span></p>`, "Welcome. Contract: model accounts correctly, pick collections wisely, use generics.");
 
-    slide(`
-      <h2>The contract for this room</h2>
-      <div class="grid2">
-        <div class="card"><h3>You will be able to</h3>
-          <ul class="tight">
-            <li>Model a catalog with classes, inheritance, and interfaces</li>
-            <li>Choose List vs Set vs Map for a real use case</li>
-            <li>Remove from a collection without blowing up</li>
-            <li>Write a generic repository instead of a raw List</li>
-          </ul>
-        </div>
-        <div class="card"><h3>We will not</h3>
-          <ul class="tight">
-            <li>Memorize API trivia</li>
-            <li>Boil the ocean on Spring / Hibernate</li>
-            <li>Pretend getters equal encapsulation</li>
-            <li>Ship magic values like <code>price = "0"</code> as a type system</li>
-          </ul>
-        </div>
-      </div>
-    `, "Read the left column as success criteria. Mention frameworks are parked until Q&A.");
+    slide(`<h2>The contract for this room</h2><div class="grid2"><div class="card"><h3>You will be able to</h3><ul class="tight"><li>Model savings, checking, wallet with OOP</li><li>Look up accounts by number and group by branch</li><li>Close inactive accounts without iterator bugs</li><li>Build <code>Repository&lt;T&gt;</code> instead of raw Lists</li></ul></div><div class="card"><h3>We will not</h3><ul class="tight"><li>Use <code>double</code> for money</li><li>Pretend getters = encapsulation</li><li>Switch on <code>accountType</code> strings forever</li><li>Deep-dive Spring/JPA in Block A</li></ul></div></div>`, "Set success criteria. Park frameworks.");
 
-    slide(`
-      <h2>Agenda — protect the clock</h2>
-      <table>
-        <tr><th>When</th><th>Block</th><th>Outcome</th></tr>
-        <tr><td>0:00 – 0:30</td><td>Concepts</td><td>Shared vocabulary and mental models</td></tr>
-        <tr><td>0:30 – 2:30</td><td>Labs</td><td>Demos + paired exercises on a catalog</td></tr>
-        <tr><td>2:30 – 3:00</td><td>Q&amp;A</td><td>Discussion, recap, homework</td></tr>
-      </table>
-      <p class="muted" style="margin-top:18px">10-minute break around 1:30. Interrupt for confusion. Park rabbit holes.</p>
-    `, "Write the three blocks on a whiteboard and leave them up.");
+    slide(`<h2>Agenda — protect the clock</h2><table><tr><th>When</th><th>Block</th><th>Outcome</th></tr><tr><td>0:00–0:30</td><td>Concepts</td><td>Vocabulary + mental models</td></tr><tr><td>0:30–2:30</td><td>Labs</td><td>Banking demos + exercises</td></tr><tr><td>2:30–3:00</td><td>Q&amp;A</td><td>Recap + homework</td></tr></table><p class="muted" style="margin-top:18px">Break ~1:30. Interrupt for confusion.</p>`, "Write blocks on whiteboard.");
 
-    slide(`
-      <h2>How a strong technical session runs</h2>
-      <div class="grid3">
-        <div class="card"><h3>1. One domain</h3><p>Every example is a LearnHub catalog. No animals, no shapes.</p></div>
-        <div class="card"><h3>2. Break it live</h3><p>You will see CME and ClassCastException on purpose.</p></div>
-        <div class="card"><h3>3. Decision, not dump</h3><p>After each demo: <em>when would I use this on Monday?</em></p></div>
-      </div>
-    `, "This slide sets culture. If someone asks a Spring proxy question at minute 8, park it.");
+    slide(`<h2>How a strong technical session runs</h2><div class="grid3"><div class="card"><h3>1. One domain</h3><p>Every example is banking. Same customers, branches, accounts all day.</p></div><div class="card"><h3>2. Break it live</h3><p>Overdraft rejection, CME, raw-type ClassCastException — on purpose.</p></div><div class="card"><h3>3. Monday decisions</h3><p>After each demo: <em>where does this show up in a core banking service?</em></p></div></div>`, "Culture slide.");
 
-    slide(`
-      <h2>Running example</h2>
-      <div class="tree">
-        Content (abstract catalog item)<br>
-        &nbsp;&nbsp;├── VideoCourse&nbsp;&nbsp;&nbsp;implements Priced<br>
-        &nbsp;&nbsp;├── LiveWorkshop&nbsp;implements Priced · seat limit<br>
-        &nbsp;&nbsp;└── Assessment&nbsp;&nbsp;&nbsp;&nbsp;free skill check
-      </div>
-      <p>Plus <code>Instructor</code> (has-a), <code>CatalogService</code> (collections), <code>Repository&lt;T&gt;</code> (generics).</p>
-    `, "This is the whole session. Point at the tree whenever you change topics.");
+    slide(`<h2>Running example</h2><div class="tree">Account (abstract)<br>&nbsp;&nbsp;├── SavingsAccount&nbsp;&nbsp;implements InterestBearing<br>&nbsp;&nbsp;├── CheckingAccount&nbsp;overdraft-aware withdraw<br>&nbsp;&nbsp;└── PrepaidWallet&nbsp;&nbsp;&nbsp;no interest</div><p>Plus <code>Customer</code>, <code>AccountRegistry</code>, <code>Repository&lt;T&gt;</code>.</p>`, "Point at this tree whenever topic changes.");
 
-    slide(`
-      <h2>Why this maps to our codebase</h2>
-      <table>
-        <tr><th>LearnHub today</th><th>Core Java we practice</th></tr>
-        <tr><td><code>Course</code> entity, <code>type</code> as String</td><td>Type hierarchy instead of switch-on-string</td></tr>
-        <tr><td><code>price</code> as String</td><td><code>BigDecimal</code> + optional <code>Priced</code></td></tr>
-        <tr><td>Service returning lists of courses</td><td><code>List</code> / <code>Map&lt;Integer, Content&gt;</code></td></tr>
-        <tr><td>DAO + service split</td><td><code>Repository&lt;T&gt;</code> as the generic idea</td></tr>
-      </table>
-      <p class="muted">JPA entities are persistence. Domain types can be richer. We keep that tension honest.</p>
-    `, "Open Course.java only if you have a second window. Do not derail into Hibernate.");
+    slide(`<h2>Why banking fits Core Java</h2><table><tr><th>Real pain</th><th>Today's tool</th></tr><tr><td><code>if ("SAVINGS")</code> / <code>if ("CHECKING")</code></td><td>Inheritance + polymorphism</td></tr><tr><td>Scan list to find SA-101</td><td><code>Map&lt;String, Account&gt;</code></td></tr><tr><td>Duplicate account numbers</td><td><code>equals</code>/<code>hashCode</code> + registry guard</td></tr><tr><td>Raw account list in memory</td><td><code>Repository&lt;SavingsAccount&gt;</code></td></tr></table>`, "Legacy cores store type as String — we show the better shape.");
 
-    slide(`
-      <div class="kicker">Block A · 30 minutes</div>
-      <h1>Conceptual overview</h1>
-      <p class="big muted">OOP models things. Collections model groups of things. Generics make the compiler enforce both.</p>
-    `, "Reset energy. No code yet except tiny snippets.");
+    slide(`<div class="kicker">Block A · 30 min</div><h1>Conceptual overview</h1><p class="big muted">OOP models accounts. Collections model groups. Generics protect both.</p>`, "No live IDE yet.");
 
-    slide(`
-      <h2>The problem OOP exists to kill</h2>
-      <pre>if ("video".equals(course.getType())) { /* duration, stream */ }
-else if ("live".equals(course.getType())) { /* seats, zoom */ }
-else if ("quiz".equals(course.getType())) { /* passingScore */ }
-else { /* every new product type */ }</pre>
-      <p>Every new catalog kind edits this pile. Polymorphism inverts it: <strong>new type, old loop.</strong></p>
-    `, "This is the 'why'. Pause. Ask who has seen this in production.");
+    slide(`<h2>The problem OOP exists to kill</h2><pre>if ("SAVINGS".equals(type)) { accrueInterest(); }
+else if ("CHECKING".equals(type)) { checkOverdraft(); }
+else if ("WALLET".equals(type)) { /* no interest */ }
+else { /* every new product */ }</pre><p>New account product → edit this pile. Polymorphism: <strong>new class, old loop.</strong></p>`, "Ask who has seen this in a banking/monolith codebase.");
 
-    slide(`
-      <h2>Class vs object</h2>
-      <div class="grid2">
-        <div class="card"><h3>Class</h3><p>Blueprint. Fields + constructors + methods. Loaded once as a type.</p>
-          <pre>public class Instructor { ... }</pre>
-        </div>
-        <div class="card"><h3>Object</h3><p>Instance on the heap. Own state. Many per class.</p>
-          <pre>Instructor ada = new Instructor(
-  "Ada Lovelace", "Foundations");</pre>
-        </div>
-      </div>
-    `, "Two Instructor objects, one class. Memory sketch on whiteboard if the room is junior.");
+    slide(`<h2>Class vs object</h2><div class="grid2"><div class="card"><h3>Class</h3><p>Blueprint loaded once.</p><pre>public class Customer { ... }</pre></div><div class="card"><h3>Object</h3><p>Instance on the heap.</p><pre>Customer priya = new Customer(
+  "C1001", "Priya Sharma");</pre></div></div>`, "Two customers, one class.");
 
-    slide(`
-      <h2>Encapsulation</h2>
-      <p>Not “I wrote getters.” It is <strong>protecting invariants</strong>.</p>
-      <ul class="tight">
-        <li>Name cannot be blank → constructor throws</li>
-        <li>Enrollment only through <code>enroll()</code>, not <code>count++</code> from outside</li>
-        <li>Workshop cannot exceed seats</li>
-      </ul>
-      <pre>public void enroll(String email) {
-  if (getEnrollmentCount() >= seats)
-    throw new IllegalStateException("full");
-  super.enroll(email);
-}</pre>
-    `, "Ask: if seats were public, what bug appears in week two?");
+    slide(`<h2>Encapsulation</h2><p>Protect ledger invariants — not “I wrote getters.”</p><ul class="tight"><li>Balance is private; mutate only via deposit/withdraw</li><li>Amounts must be positive</li><li>Checking cannot exceed overdraft limit</li></ul><pre>if (projected.compareTo(overdraftLimit.negate()) &lt; 0)
+  throw new IllegalStateException("Overdraft exceeded");</pre>`, "Ask: what if balance were public?");
 
-    slide(`
-      <h2>Four pillars — catalog edition</h2>
-      <table>
-        <tr><th>Pillar</th><th>Meaning</th><th>Here</th></tr>
-        <tr><td>Encapsulation</td><td>Hide representation</td><td>private fields, enroll()</td></tr>
-        <tr><td>Inheritance</td><td>is-a family</td><td>VideoCourse extends Content</td></tr>
-        <tr><td>Polymorphism</td><td>one API, many bodies</td><td>catalogLine(), enroll()</td></tr>
-        <tr><td>Abstraction</td><td>what, not how</td><td>abstract formatLabel(), Priced</td></tr>
-      </table>
-    `, "Have the room say an example for each. Keep it under 90 seconds.");
+    slide(`<h2>Four pillars — banking edition</h2><table><tr><th>Pillar</th><th>Here</th></tr><tr><td>Encapsulation</td><td>private balance, validated transactions</td></tr><tr><td>Inheritance</td><td>SavingsAccount extends Account</td></tr><tr><td>Polymorphism</td><td>statementLine(), withdraw()</td></tr><tr><td>Abstraction</td><td>formatLabel(), InterestBearing</td></tr></table>`, "Room shout examples — 90 seconds max.");
 
-    slide(`
-      <h2>Inheritance = is-a</h2>
-      <pre>public abstract class Content implements Enrollable { ... }
+    slide(`<h2>Inheritance = is-a</h2><pre>public abstract class Account implements Transactable { ... }
+public class SavingsAccount extends Account implements InterestBearing { ... }</pre><p class="warn">Do not inherit just to reuse a helper. Coupling, not design.</p>`, "Liskov: checking can go negative within limit — document the contract.");
 
-public class VideoCourse extends Content implements Priced { ... }</pre>
-      <p>Use inheritance when the subclass <strong>is substitutable</strong> for the parent.</p>
-      <p class="warn">Do not inherit a class just to steal two helper methods. That is coupling, not design.</p>
-    `, "Liskov in one sentence: callers of Content must not be surprised.");
+    slide(`<h2>has-a vs is-a vs can-do</h2><div class="grid3"><div class="card"><h3>is-a</h3><p><code>SavingsAccount</code> is <code>Account</code></p></div><div class="card"><h3>has-a</h3><p><code>Account</code> has <code>Customer</code></p></div><div class="card"><h3>can-do</h3><p><code>Transactable</code>, <code>InterestBearing</code></p></div></div>`, "Wallet: is-a Account, can-do Transactable, not InterestBearing.");
 
-    slide(`
-      <h2>has-a vs is-a vs can-do</h2>
-      <div class="grid3">
-        <div class="card"><h3>is-a</h3><p>extend a class</p><p><code>VideoCourse</code> is <code>Content</code></p></div>
-        <div class="card"><h3>has-a</h3><p>composition / field</p><p><code>Content</code> has <code>Instructor</code></p></div>
-        <div class="card"><h3>can-do</h3><p>interface</p><p><code>Priced</code>, <code>Enrollable</code></p></div>
-      </div>
-      <p style="margin-top:18px">If you remember one slide from Block A, remember this one.</p>
-    `, "Quiz: Assessment is-a Content, can-do Enrollable, cannot-do Priced.");
+    slide(`<h2>Polymorphism</h2><pre>List&lt;Account&gt; portfolio = Arrays.asList(savings, checking, wallet);
+for (Account account : portfolio) {
+    System.out.println(account.statementLine());
+}</pre><p>Compile-time: <code>Account</code>. Runtime: <code>CheckingAccount.formatLabel()</code>.</p>`, "Draw reference type vs object type.");
 
-    slide(`
-      <h2>Polymorphism</h2>
-      <pre>List&lt;Content&gt; catalog = Arrays.asList(video, workshop, quiz);
-for (Content item : catalog) {
-    System.out.println(item.catalogLine()); // runtime type wins
-}</pre>
-      <p><strong>Compile-time type</strong> = <code>Content</code> (what you may call).<br>
-         <strong>Runtime type</strong> = <code>LiveWorkshop</code> (which body runs).</p>
-      <p class="muted">This is override. Overload is a different, compile-time trick.</p>
-    `, "Draw the arrow: reference type vs object type.");
-
-    slide(`
-      <h2>Abstraction — template method</h2>
-      <pre>public final String catalogLine() {
-  return "[" + formatLabel() + "] #" + id + " " + title;
+    slide(`<h2>Abstraction — template method</h2><pre>public final String statementLine() {
+  return "[" + formatLabel() + "] " + accountNumber + " ...";
 }
-protected abstract String formatLabel();</pre>
-      <p>Parent owns the <em>algorithm</em>. Child fills the <em>hole</em>.</p>
-      <p>Always mark overrides with <code>@Override</code> so typos fail the build.</p>
-    `, "Name the pattern. Seniors will nod; juniors need the name.");
+protected abstract String formatLabel();</pre><p>Parent owns statement header. Child fills product label.</p>`, "Always @Override formatLabel.");
 
-    slide(`
-      <h2>Interfaces</h2>
-      <pre>public interface Enrollable {
-  void enroll(String learnerEmail);
-  int getEnrollmentCount();
-}
-public interface Priced {
-  BigDecimal getPrice();
-}</pre>
-      <p>Assessment is enrollable and <span class="ok">not</span> priced. No <code>price = 0</code> lie.</p>
-      <p class="muted">Java: one superclass, many interfaces. Shared <em>state</em> still belongs on an abstract class.</p>
-    `, "Default methods exist since Java 8 but cannot hold instance fields.");
+    slide(`<h2>Interfaces</h2><pre>interface Transactable { deposit(); withdraw(); getBalance(); }
+interface InterestBearing { getInterestRate(); accrueInterest(); }</pre><p>Wallet transacts but <span class="ok">does not</span> accrue interest. No fake <code>rate = 0</code>.</p>`, "Multiple interfaces OK. One superclass.");
 
-    slide(`
-      <h2>Abstract class vs interface</h2>
-      <table>
-        <tr><th></th><th>Abstract class</th><th>Interface</th></tr>
-        <tr><td>Purpose</td><td>Family + shared state</td><td>Capability</td></tr>
-        <tr><td>Fields</td><td>instance fields OK</td><td>constants (and Java 8+ static)</td></tr>
-        <tr><td>Constructors</td><td>yes</td><td>no</td></tr>
-        <tr><td>Multiple</td><td>one parent</td><td>many</td></tr>
-        <tr><td>Our choice</td><td><code>Content</code></td><td><code>Enrollable</code>, <code>Priced</code></td></tr>
-      </table>
-    `, "If they ask 'always interface?' — no, not when you share enrollmentCount.");
+    slide(`<h2>Abstract class vs interface</h2><table><tr><th></th><th>Abstract class</th><th>Interface</th></tr><tr><td>Shared state</td><td>balance, accountNumber</td><td>constants only</td></tr><tr><td>Constructors</td><td>yes</td><td>no</td></tr><tr><td>Multiple</td><td>one parent</td><td>many</td></tr><tr><td>Pick</td><td>Account</td><td>Transactable, InterestBearing</td></tr></table>`, "Money stays BigDecimal everywhere.");
 
-    slide(`
-      <h2>equals and hashCode</h2>
-      <p>Two catalog rows with the same id are the same product.</p>
-      <pre>public boolean equals(Object o) {
-  return (o instanceof Content) && id == ((Content) o).id;
-}
-public int hashCode() { return Objects.hash(id); }</pre>
-      <p class="warn">HashSet / HashMap are unusable as intended if you skip this pair.</p>
-    `, "Contract: equal ⇒ same hash. Mutable keys are a footgun — id is stable.");
+    slide(`<h2>equals and hashCode</h2><pre>return accountNumber.equals(other.accountNumber);</pre><p>Business key = account number. Required for HashSet/HashMap indexes in the registry.</p>`, "Never use mutable fields in hashCode.");
 
-    slide(`
-      <h2>Collections — the other half</h2>
-      <p class="big">OOP answers “what is this thing?”<br>Collections answer “how do I hold many of them?”</p>
-      <div class="grid3" style="margin-top:12px">
-        <div class="card"><h3>List</h3><p>Sequence. Index. Duplicates OK. Catalog display order.</p></div>
-        <div class="card"><h3>Set</h3><p>Uniqueness. Tags, emails, categories.</p></div>
-        <div class="card"><h3>Map</h3><p>Key → value. <code>id → course</code>, grouping.</p></div>
-      </div>
-    `, "Audience: shout which structure for 'lookup course by pnum' — Map.");
+    slide(`<h2>Collections</h2><div class="grid3"><div class="card"><h3>List</h3><p>Ordered accounts for statements</p></div><div class="card"><h3>Set</h3><p>Unique payment rails: UPI, NEFT, IMPS</p></div><div class="card"><h3>Map</h3><p>accountNumber → Account; branch → bucket</p></div></div>`, "Shout: lookup SA-101 — Map.");
 
-    slide(`
-      <h2>Pick the structure (10 seconds)</h2>
-      <table>
-        <tr><th>Need</th><th>Pick</th><th>Usual impl</th></tr>
-        <tr><td>Ordered catalog page</td><td>List</td><td>ArrayList</td></tr>
-        <tr><td>Unique tags, any order</td><td>Set</td><td>HashSet</td></tr>
-        <tr><td>Unique tags, keep insert order</td><td>Set</td><td>LinkedHashSet</td></tr>
-        <tr><td>Sorted unique titles</td><td>Set</td><td>TreeSet</td></tr>
-        <tr><td>Find by id</td><td>Map</td><td>HashMap</td></tr>
-        <tr><td>Recently added, stable iterate</td><td>Map</td><td>LinkedHashMap</td></tr>
-      </table>
-    `, "Hashtable/Vector = legacy. ConcurrentHashMap only if you say threads.");
+    slide(`<h2>Pick the structure</h2><table><tr><th>Need</th><th>Pick</th></tr><tr><td>Statement order</td><td>List / ArrayList</td></tr><tr><td>Unique rails</td><td>Set / HashSet or LinkedHashSet</td></tr><tr><td>Find by account number</td><td>Map / HashMap</td></tr><tr><td>Recently opened, stable iterate</td><td>LinkedHashMap</td></tr></table>`, "Hashtable/Vector = legacy.");
 
-    slide(`
-      <h2>Iterators</h2>
-      <p>for-each is an iterator in disguise. Structural remove inside for-each → <span class="bad">ConcurrentModificationException</span>.</p>
-      <pre>Iterator&lt;Content&gt; it = list.iterator();
+    slide(`<h2>Iterators</h2><p>Close zero-balance inactive accounts while iterating.</p><pre>Iterator&lt;Account&gt; it = list.iterator();
 while (it.hasNext()) {
-  if (it.next().getEnrollmentCount() == 0) it.remove();
-}</pre>
-      <p>This is the demo we will break on purpose in Block B.</p>
-    `, "Do not skip this later. It is the most memorable bug.");
+  if (inactive(it.next())) it.remove();
+}</pre><p class="bad">for-each + list.remove → ConcurrentModificationException</p>`, "We break this live in Block B.");
 
-    slide(`
-      <h2>Generics — compiler as teammate</h2>
-      <pre>List raw = new ArrayList();
-raw.add("oops");
-VideoCourse c = (VideoCourse) raw.get(0); // boom at runtime
+    slide(`<h2>Generics</h2><pre>Repository&lt;SavingsAccount&gt; accounts = new Repository&lt;&gt;();
+Repository&lt;Customer&gt; customers = new Repository&lt;&gt;();
+// customers.save("SA-101", savings); // compile error</pre><p>Move ClassCastException left — to compile time.</p>`, "PECS in Block B.");
 
-Repository&lt;VideoCourse&gt; repo = new Repository&lt;VideoCourse&gt;();
-repo.save(101, course);  // Instructor would not compile</pre>
-      <p>Move failures <strong>left</strong>: compile time, not production.</p>
-    `, "PECS later. Here only: parameterize everything, no raw types.");
+    slide(`<h2>Block A recap</h2><ul class="tight"><li>is-a / has-a / can-do</li><li>Polymorphic statementLine + withdraw</li><li>List / Set / Map in ten seconds</li><li>Iterator.remove for in-flight deletes</li><li>BigDecimal + generics, no raw Lists</li></ul><p class="muted">Open workbook. Labs: <code>core-java-session/labs</code></p>`, "Water. DemoOOP next.");
 
-    slide(`
-      <h2>Block A recap — then we code</h2>
-      <ul class="tight">
-        <li>is-a / has-a / can-do</li>
-        <li>Override = runtime. Abstract class holds state. Interface holds capability.</li>
-        <li>List sequence, Set unique, Map lookup</li>
-        <li>Iterator.remove for in-flight deletes</li>
-        <li>Generics: one class, many types, no raw Lists</li>
-      </ul>
-      <p class="muted">Open <code>PARTICIPANT_WORKBOOK.md</code>. Labs live under <code>core-java-session/labs</code>.</p>
-    `, "Water. Then DemoOOP.");
+    slide(`<div class="kicker">Block B · 2 hours</div><h1>Labs</h1><p class="big">Mini bank core — real exceptions, pair exercises.</p>`, "Large IDE font.");
 
-    slide(`
-      <div class="kicker">Block B · 2 hours</div>
-      <h1>Labs</h1>
-      <p class="big">Real catalog. Real exceptions. Pair on the workbook.</p>
-    `, "IDE on projector. Font large.");
+    slide(`<h2>Lab map</h2><table><tr><th>Clock</th><th>Demo</th><th>Exercise</th></tr><tr><td>0:30–0:50</td><td>Customer, Account, Savings</td><td>Ex 1 TermDeposit</td></tr><tr><td>0:50–1:10</td><td>Polymorphic portfolio</td><td>Ex 2</td></tr><tr><td>1:10–1:30</td><td>Overdraft + InterestBearing</td><td>—</td></tr><tr><td>1:40–2:10</td><td>AccountRegistry + CME</td><td>Ex 3</td></tr><tr><td>2:10–2:25</td><td>DemoGenerics</td><td>Ex 4</td></tr><tr><td>2:25–2:30</td><td>BankingApp</td><td>—</td></tr></table>`, "Cut PECS if late, not CME.");
 
-    slide(`
-      <h2>Lab map</h2>
-      <table>
-        <tr><th>Clock</th><th>Demo</th><th>Exercise</th></tr>
-        <tr><td>0:30–0:50</td><td>Instructor, Content, VideoCourse</td><td>Ex 1 CertificateTrack</td></tr>
-        <tr><td>0:50–1:10</td><td>Polymorphic loop, template method</td><td>—</td></tr>
-        <tr><td>1:10–1:30</td><td>Interfaces, seat limit, equals</td><td>Ex 2</td></tr>
-        <tr><td>1:30–1:40</td><td colspan="2">Break</td></tr>
-        <tr><td>1:40–2:10</td><td>DemoCollections + CME</td><td>Ex 3</td></tr>
-        <tr><td>2:10–2:25</td><td>DemoGenerics + PECS</td><td>Ex 4 if time</td></tr>
-        <tr><td>2:25–2:30</td><td>CatalogApp capstone</td><td>—</td></tr>
-      </table>
-    `, "If late: cut PECS depth, never cut CME or capstone.");
+    slide(`<h2>Demo 1 — Customer &amp; Account</h2><p>Run <code>com.banking.session.oop.DemoOOP</code></p><ul class="tight"><li>Two Customer objects</li><li>Savings / Checking / Wallet share Account</li><li>BigDecimal balances</li></ul>`, "File-by-file narration.");
 
-    slide(`
-      <h2>Demo 1 — objects and inheritance</h2>
-      <p>Run <code>com.learnhub.session.oop.DemoOOP</code></p>
-      <ul class="tight">
-        <li>Two <code>Instructor</code> instances</li>
-        <li><code>VideoCourse</code> / <code>LiveWorkshop</code> / <code>Assessment</code> share <code>Content</code></li>
-        <li>Watch <code>super(...)</code> and private fields</li>
-      </ul>
-      <p class="muted">Optional live edit: add <code>level</code> on Content — subclasses keep compiling.</p>
-    `, "Narrate file by file. Do not scroll at light speed.");
+    slide(`<h2>Demo 2 — polymorphism</h2><pre>for (Account account : portfolio) {
+  System.out.println(account.statementLine());
+}</pre><p>Three products, one loop. No accountType switch.</p>`, "Compile vs runtime type on board.");
 
-    slide(`
-      <h2>What to notice in Content</h2>
-      <pre>protected Content(int id, String title, ...) { ... }
-public final String catalogLine() { ... }
-protected abstract String formatLabel();
-public void enroll(String learnerEmail) { ... }</pre>
-      <p><code>protected</code> constructor: only the family constructs. <code>final</code> catalogLine: children cannot break the header format.</p>
-    `, "Ask: why not public constructor on abstract class? You still can't new it, but clarity.");
+    slide(`<h2>Demo 3 — interfaces</h2><ul class="tight"><li>Third checking withdraw <span class="bad">fails</span> — overdraft</li><li>Savings accrues interest</li><li>Wallet does not</li><li>Same account number ⇒ equals true</li></ul>`, "Exercise 1+2 after this.");
 
-    slide(`
-      <h2>Demo 2 — polymorphism</h2>
-      <p>Same loop, three labels: VIDEO / LIVE / ASSESS.</p>
-      <pre>for (Content item : catalog) {
-    System.out.println(item.catalogLine());
-}</pre>
-      <p>No <code>instanceof</code> in this loop. That is the design working.</p>
-    `, "If someone wants instanceof here, say wait for pricing boundary.");
+    slide(`<h2>instanceof — smell vs tool</h2><div class="grid2"><div class="card"><h3 class="bad">Smell</h3><p>Core transaction loop switching on product type</p></div><div class="card"><h3 class="ok">Tool</h3><p>End-of-day interest batch: <code>instanceof InterestBearing</code></p></div></div>`, "BankingApp uses instanceof at accrual boundary — say why.");
 
-    slide(`
-      <h2>Demo 3 — interfaces in action</h2>
-      <ul class="tight">
-        <li>Third enroll on a 2-seat workshop <span class="bad">fails</span></li>
-        <li><code>printPrice</code> uses <code>instanceof Priced</code> — OK at a billing edge</li>
-        <li>Quiz prints as free</li>
-        <li>Same id ⇒ <code>equals</code> true even if title text differs</li>
-      </ul>
-    `, "Exercise 1+2 after this. Timebox 5 min. Debrief one pair.");
+    slide(`<h2>Break · 10 min</h2><p class="big">Next: AccountRegistry and we crash a for-each.</p>`, "No new topics during break.");
 
-    slide(`
-      <h2>instanceof — smell vs tool</h2>
-      <div class="grid2">
-        <div class="card"><h3 class="bad">Smell</h3><p>Inside the core catalog loop, switching on type to decide behavior that belongs on the object.</p></div>
-        <div class="card"><h3 class="ok">Tool</h3><p>At a boundary: reporting, JSON, billing, “does this implement Priced?”</p></div>
-      </div>
-    `, "Nuance makes you credible. Absolutism does not.");
+    slide(`<h2>Demo 4 — AccountRegistry</h2><table><tr><td>List</td><td>ordered accounts</td></tr><tr><td>Map</td><td>findByNumber</td></tr><tr><td>Map of Set</td><td>byBranch</td></tr><tr><td>unmodifiable returns</td><td>encapsulation</td></tr></table>`, "Single open() keeps indexes consistent.");
 
-    slide(`
-      <h2>Break · 10 minutes</h2>
-      <p class="big">Next: List, Set, Map, and we will crash a for-each on purpose.</p>
-      <p class="muted">Skim the collection table in the workbook.</p>
-    `, "You also drink water. Do not take questions that start a new topic.");
+    slide(`<h2>Set — payment rails</h2><pre>[UPI, NEFT, UPI, IMPS, NEFT]
+HashSet        → no order
+LinkedHashSet  → insertion order
+TreeSet        → sorted</pre>`, "Run DemoCollections lines.");
 
-    slide(`
-      <h2>Demo 4 — CatalogService</h2>
-      <p>This is what a service layer actually does with collections.</p>
-      <table>
-        <tr><td><code>ArrayList&lt;Content&gt;</code></td><td>display order</td></tr>
-        <tr><td><code>HashMap&lt;Integer, Content&gt;</code></td><td>O(1) findById</td></tr>
-        <tr><td><code>Map&lt;String, Set&lt;Content&gt;&gt;</code></td><td>group by category</td></tr>
-        <tr><td>unmodifiable wrappers</td><td>callers cannot corrupt indexes</td></tr>
-      </table>
-    `, "Returning the live list is a classic production bug.");
+    slide(`<h2>Break the iterator</h2><pre class="bad">for (Account a : orderedAccounts) {
+  if (zeroBalance(a)) orderedAccounts.remove(a);
+}</pre><p class="ok">Fix: Iterator.remove() in closeZeroBalanceInactive()</p>`, "Highest-energy moment. Let it stack trace.");
 
-    slide(`
-      <h2>Set implementations — same input</h2>
-      <pre>tags = [java, oop, java, collections, oop]
+    slide(`<h2>Demo 5 — generics</h2><p>Raw List → ClassCastException. Then Repository&lt;SavingsAccount&gt;.</p><pre>void print(List&lt;? extends Account&gt; accounts);
+void addInterest(List&lt;? super InterestBearing&gt; dest, ...);</pre>`, "PECS one breath.");
 
-HashSet        → uniqueness, no order promise
-LinkedHashSet  → uniqueness + insertion order
-TreeSet        → uniqueness + sorted order</pre>
-      <p>Run the demo and read the three lines. That is the whole interview.</p>
-    `, "TreeSet needs Comparable. String is. Content would need a Comparator.");
+    slide(`<h2>Capstone — BankingApp</h2><ul class="tight"><li>Repository&lt;Customer&gt;</li><li>AccountRegistry</li><li>Deposits / withdrawals</li><li>Interest accrual batch</li><li>Branch grouping BLR-01</li></ul>`, "Run once. Trace with cursor.");
 
-    slide(`
-      <h2>Map — two jobs</h2>
-      <div class="grid2">
-        <div class="card"><h3>Lookup</h3><pre>byId.get(202)</pre><p>Primary key access. Do not scan a List.</p></div>
-        <div class="card"><h3>Grouping</h3><pre>byCategory.get("Backend")</pre><p>Secondary index. Keep it in sync on add/remove.</p></div>
-      </div>
-      <p class="muted">If add() updates only the List, your Map lies. That is why add() is one method.</p>
-    `, "This is why encapsulation of collections matters.");
+    slide(`<div class="kicker">Block C · 30 min</div><h1>Q&amp;A</h1><p class="big muted">BigDecimal, overdraft rules, HashMap vs Hashtable.</p>`, "Q_AND_A.md on second screen.");
 
-    slide(`
-      <h2>Break the iterator</h2>
-      <pre class="bad">for (Content item : orderedCatalog) {
-  if (item.getEnrollmentCount() == 0) {
-    orderedCatalog.remove(item); // CME
-  }
-}</pre>
-      <p class="ok">Fix: <code>Iterator.remove()</code> (already in <code>dropUnenrolled</code>).</p>
-      <p>Do this live. Let it stack-trace. Then restore.</p>
-    `, "Highest-energy moment. Wait for the exception. Smile. Fix.");
+    slide(`<h2>Five things to keep</h2><ol><li>is-a / has-a / can-do</li><li>New product ≠ edit old loops</li><li>List / Set / Map — decide fast</li><li>Never remove in for-each</li><li>No raw types; BigDecimal for money</li></ol>`, "Leave up during Q&A.");
 
-    slide(`
-      <h2>ArrayList vs the rest (honest version)</h2>
-      <ul class="tight">
-        <li><strong>ArrayList</strong> — default List. Random access, append.</li>
-        <li><strong>LinkedList</strong> — almost never for catalogs. Deque/queue maybe.</li>
-        <li><strong>Vector / Hashtable / Stack</strong> — legacy synchronized. Don’t.</li>
-        <li><strong>ConcurrentHashMap</strong> — when multiple threads mutate a map.</li>
-      </ul>
-    `, "Exercise 3: uniqueInstructors + enrollmentByCategory.");
+    slide(`<h2>Homework</h2><ul class="tight"><li>Exercises 1–3 if unfinished</li><li>Pager&lt;T&gt;</li><li>Ex 6: five review bullets for your team</li></ul><p class="muted">CHEATSHEET.md · run-labs.sh expected output</p>`, "Offer office hours.");
 
-    slide(`
-      <h2>Demo 5 — generics</h2>
-      <p>Run <code>DemoGenerics</code>. Let the raw List throw.</p>
-      <pre>Repository&lt;VideoCourse&gt; courses = new Repository&lt;VideoCourse&gt;();
-Repository&lt;Instructor&gt; faculty = new Repository&lt;Instructor&gt;();</pre>
-      <p>One implementation. Two stores. Compiler refuses to put Ada in the course repo.</p>
-    `, "Type erasure one-liner if asked: checks at compile, gone at runtime.");
+    slide(`<h2>Resources</h2><table><tr><td>Slides</td><td>presentation/index.html</td></tr><tr><td>Script</td><td>FACILITATOR_GUIDE.md</td></tr><tr><td>Exercises</td><td>PARTICIPANT_WORKBOOK.md</td></tr><tr><td>Code</td><td>labs/ + run-labs.sh</td></tr></table>`, "Close cleanly.");
 
-    slide(`
-      <h2>PECS in one breath</h2>
-      <pre>void printTitles(List&lt;? extends Content&gt; items); // READ Content
-void addPriced (List&lt;? super Priced&gt; dest, Priced p); // WRITE Priced</pre>
-      <p><strong>Producer Extends, Consumer Super.</strong></p>
-      <p>If the method both reads and writes the same list, use a concrete <code>T</code>, not a wildcard.</p>
-    `, "Do not do a 15-minute PECS lecture. One example each.");
-
-    slide(`
-      <h2>Why List&lt;VideoCourse&gt; is not List&lt;Content&gt;</h2>
-      <pre>List&lt;VideoCourse&gt; videos = ...;
-List&lt;Content&gt; catalog = videos;     // illegal (invariance)
-catalog.add(new Assessment(...));   // would corrupt videos</pre>
-      <p>Arrays are covariant and therefore unsound. Generics learned the lesson.</p>
-    `, "This is the stretch question for seniors.");
-
-    slide(`
-      <h2>Capstone — CatalogApp</h2>
-      <ul class="tight">
-        <li><code>Repository&lt;Instructor&gt;</code> faculty</li>
-        <li><code>CatalogService</code> indexes</li>
-        <li>Polymorphic print of every item</li>
-        <li>Revenue = price × enrollments for <code>Priced</code> only</li>
-        <li>Category bucket for Backend</li>
-      </ul>
-      <p>This is one system, not three topics.</p>
-    `, "Run it. Trace with the cursor. Stop talking over the output.");
-
-    slide(`
-      <h2>Connect back to LearnHub</h2>
-      <ul class="tight">
-        <li><code>Course.pnum</code> → map key</li>
-        <li><code>Course.type</code> → hierarchy or at least an enum</li>
-        <li><code>Course.price</code> → <code>BigDecimal</code>, not String, when you can</li>
-        <li>Do not force JPA entities to be your polymorphism root</li>
-      </ul>
-      <p class="muted">Workbook Exercise 6 is the “we work here” close.</p>
-    `, "Respect the legacy app. Recommend strangler changes, not a rewrite speech.");
-
-    slide(`
-      <div class="kicker">Block C · 30 minutes</div>
-      <h1>Q&amp;A and discussion</h1>
-      <p class="big muted">Confusion first. Trivia never.</p>
-    `, "Planted questions if silent: price=0, Course.price String, abstract constructors, HashMap vs Hashtable.");
-
-    slide(`
-      <h2>Five things to keep</h2>
-      <ol>
-        <li>is-a / has-a / can-do</li>
-        <li>New type should not require editing old loops</li>
-        <li>List / Set / Map — decide in ten seconds</li>
-        <li>Never remove inside for-each; use Iterator</li>
-        <li>No raw types. <code>Repository&lt;T&gt;</code> over copy-paste stores</li>
-      </ol>
-    `, "Leave this up during Q&A.");
-
-    slide(`
-      <h2>Homework</h2>
-      <ul class="tight">
-        <li>Exercise 1–3 if unfinished</li>
-        <li>Exercise 4 <code>Pager&lt;T&gt;</code></li>
-        <li>Exercise 6: five bullets on <code>Course.java</code></li>
-        <li>Optional: unit-test workshop seat limits</li>
-      </ul>
-      <p class="muted">Cheatsheet: <code>core-java-session/CHEATSHEET.md</code></p>
-    `, "Office hours offer. Post the HTML and expected console output.");
-
-    slide(`
-      <h2>Resources in this pack</h2>
-      <table>
-        <tr><td>Slides</td><td>this file</td></tr>
-        <tr><td>Script</td><td>FACILITATOR_GUIDE.md</td></tr>
-        <tr><td>Exercises</td><td>PARTICIPANT_WORKBOOK.md</td></tr>
-        <tr><td>Answers you may need</td><td>Q_AND_A.md</td></tr>
-        <tr><td>Handout</td><td>CHEATSHEET.md</td></tr>
-        <tr><td>Code</td><td>labs/ + run-labs.sh</td></tr>
-      </table>
-    `, "Close. Thank them. Stop. Do not add a new topic after thank you.");
-
-    slide(`
-      <div class="kicker">End</div>
-      <h1>Questions</h1>
-      <p class="big">What would break if we put this in LearnHub tomorrow?</p>
-      <p class="muted">That is a better question than “what is a HashMap?”</p>
-    `, "You are done. Listen more than you talk.");
+    slide(`<div class="kicker">End</div><h1>Questions</h1><p class="big">What would break if we stored balances as <code>double</code>?</p>`, "Listen more than talk.");
 
     const deck = document.getElementById("deck");
     const notesEl = document.getElementById("notes");
@@ -585,8 +165,8 @@ catalog.add(new Assessment(...));   // would corrupt videos</pre>
       location.hash = String(i + 1);
     }
     document.addEventListener("keydown", (e) => {
-      if (["ArrowRight", "PageDown", " ", "Enter"].includes(e.key)) { e.preventDefault(); show(i + 1); }
-      if (["ArrowLeft", "PageUp", "Backspace"].includes(e.key)) { e.preventDefault(); show(i - 1); }
+      if (["ArrowRight","PageDown"," ","Enter"].includes(e.key)) { e.preventDefault(); show(i + 1); }
+      if (["ArrowLeft","PageUp","Backspace"].includes(e.key)) { e.preventDefault(); show(i - 1); }
       if (e.key === "Home") show(0);
       if (e.key === "End") show(S.length - 1);
       if (e.key === "n" || e.key === "N") notesEl.classList.toggle("on");

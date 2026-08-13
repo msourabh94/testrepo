@@ -1,11 +1,11 @@
-# Core Java Session Pack
+# Core Java Session Pack — Banking Domain
 
 End-to-end materials for a **3-hour** technical session:
 
 1. Object-Oriented Programming (classes, objects, inheritance, polymorphism, abstraction, interfaces)
 2. Collections & Generics (List, Set, Map, iterators, generic types and practices)
 
-Domain for every example: a **LearnHub catalog** (video courses, live workshops, assessments) — the same mental model as this repository’s `Course` entity and service layer.
+Every example uses a **mini banking core**: customers, savings, checking (with overdraft), prepaid wallets, branch registry.
 
 ## What to open tomorrow
 
@@ -32,19 +32,19 @@ chmod +x run-labs.sh
 ./run-labs.sh
 ```
 
-Requires JDK 8+. Demos use Java 7-style syntax (`<>` diamonds, no records/streams required) so they also teach concepts that map to older codebases (this repo targets Java 6/Spring 3).
+Requires JDK 8+. Demos use Java 7-style syntax so they map to older enterprise codebases too.
 
 ## Timebox (do not slip)
 
 | Block | Clock | Focus |
 |-------|--------|--------|
-| Concepts | 0:00–0:30 | Why OOP + collections exist; mental models; agenda |
-| Hands-on | 0:30–2:30 | Live coding against the labs |
+| Concepts | 0:00–0:30 | Why OOP + collections exist; mental models |
+| Hands-on | 0:30–2:30 | Live coding against the banking labs |
 | Q&A | 2:30–3:00 | Discussion, recap, homework |
 
 ## Success criteria for the session
 
-- Every attendee can explain **is-a vs has-a vs can-do** with a catalog example.
-- Every attendee can pick **List vs Set vs Map** for a real LearnHub use case.
-- Every attendee has seen a **ConcurrentModificationException** (or the iterator fix) and a **raw-type ClassCastException**.
-- Capstone (`CatalogApp`) is run once so the pieces feel like one system.
+- Every attendee can explain **is-a vs has-a vs can-do** with an account example.
+- Every attendee can pick **List vs Set vs Map** for branch lookup, unique customers, and statement order.
+- Every attendee has seen **ConcurrentModificationException** (or the iterator fix) and a **raw-type ClassCastException**.
+- Capstone (`BankingApp`) runs once so the pieces feel like one system.
